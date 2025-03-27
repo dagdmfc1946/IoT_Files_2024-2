@@ -1,0 +1,386 @@
+options:
+  parameters:
+    author: hmro2
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: spectrumsimultaro
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Not titled yet
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: N
+  id: variable
+  parameters:
+    comment: ''
+    value: '8'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [296, 12.0]
+    rotation: 0
+    state: enabled
+- name: latitud
+  id: variable
+  parameters:
+    comment: ''
+    value: '7.136921524265512'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 12.0]
+    rotation: 0
+    state: enabled
+- name: longitud
+  id: variable
+  parameters:
+    comment: ''
+    value: '-73.12083990526662'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 12.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '44000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 12]
+    rotation: 0
+    state: enabled
+- name: audio_source_0
+  id: audio_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    device_name: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_outputs: '1'
+    ok_to_block: 'True'
+    samp_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 156.0]
+    rotation: 0
+    state: disabled
+- name: blocks_complex_to_mag_0
+  id: blocks_complex_to_mag
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: N
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 100.0]
+    rotation: 0
+    state: enabled
+- name: blocks_stream_to_vector_0
+  id: blocks_stream_to_vector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_items: N
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 124.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle2_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 228.0]
+    rotation: 0
+    state: enabled
+- name: blocks_wavfile_source_0
+  id: blocks_wavfile_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    file: D:\INGENIERIA ELECTRONICA\12. Doceavo Semestre\IoT\Practica_9\voz_grabada.wav
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nchan: '1'
+    repeat: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 332.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    N: N
+    _source_code: "import numpy as np\nfrom gnuradio import gr\nimport json\nimport\
+      \ requests\nfrom datetime import datetime\n\nclass blk(gr.sync_block):  # Heredando\
+      \ de gr.sync_block\n    def __init__(self, url_google_sheet='https://docs.google.com/spreadsheets/d/1ZI1pO5DJjVnh0ph0jH8sRjnLGqXHOz-jBXJ1ZF875JM/edit?usp=sharing',\
+      \ \n\t\t latitud=7.136921524265512, longitud=-73.12083990526662, N=8, \n   \
+      \              finicial=1417000000, fpaso=1421000000, salto=40000):\n      \
+      \  gr.sync_block.__init__(self,\n            name=\"Envia a Google Sheet\",\n\
+      \            in_sig=[(np.float32, N)],  # Recibe un vector de tama\xF1o N\n\
+      \            out_sig=None)  # No tiene salida\n        \n# URL del servicio\
+      \ web de Google Apps Script\n        self.url_web_service = 'https://script.google.com/macros/s/AKfycbz7NCKBvRCvhQkuAjcaQUoxhpRQOD_4zOxplrXNP1s2fuiuB-CmPATKADO6ijK__Evm/exec'\n\
+      \        self.url_google_sheet = url_google_sheet\n        self.latitud = latitud\n\
+      \        self.longitud = longitud\n        self.N = N\n        self.finicial\
+      \ = finicial\n        self.fpaso = fpaso\n        self.salto = salto\n     \
+      \   self.contador_entradas = 0  # Contador de entradas\n        \n        #\
+      \ Contador de ventanas espectrales procesadas\n        self.entradas_procesadas\
+      \ = 0\n\n    def registrarDatos(self, data):\n        \"\"\"\n        Funci\xF3\
+      n que organiza y env\xEDa el JSON al servicio web.\n        \"\"\"\n       \
+      \ # Convertir los datos del espectro a una cadena separada por comas\n     \
+      \   data_str = ','.join([str(d) for d in data])\n        \n        # Obtener\
+      \ la fecha y hora actuales\n        fecha_actual = datetime.now().strftime(\"\
+      %Y-%m-%d %H:%M:%S\")\n        \n        # Crear el objeto JSON para la solicitud\n\
+      \        json_data = {\n            \"ordentipo\": \"crear\",\n            \"\
+      url\": self.url_google_sheet,  # URL de la Google Sheet\n            \"numeroHoja\"\
+      : 0,\n            \"filaencabezados\": 1,\n            \"columnaId\": 1,\n \
+      \           \"datos\": json.dumps([  # Envolviendo en json.dumps para convertirlo\
+      \ en una cadena JSON v\xE1lida\n                fecha_actual,\n            \
+      \    self.latitud,  # Coordenada latitud\n                self.longitud,  #\
+      \ Coordenada longitud\n                \"dagd_TestHome\",\n                self.N,\
+      \  # N\xFAmero de muestras espectrales\n                data_str,  # Datos espectrales\n\
+      \                self.finicial,  # Frecuencia inicial\n                self.fpaso\
+      \  # Paso de frecuencia\n            ])\n        }\n        \n        # Enviar\
+      \ el JSON como solicitud POST al servicio web\n        try:\n            response\
+      \ = requests.post(self.url_web_service, json=json_data)\n            response.raise_for_status()\
+      \  # Verificar que no haya errores\n            print(f\"Datos enviados exitosamente:\
+      \ {response.text}\")\n        except requests.exceptions.RequestException as\
+      \ e:\n            print(f\"Error enviando datos: {e}\")\n\n    def work(self,\
+      \ input_items, output_items):\n        \"\"\"\n        Funci\xF3n principal\
+      \ que procesa las entradas y llama a la funci\xF3n de registro.\n        \"\"\
+      \"\n        # Incrementar el contador de entradas procesadas\n        self.entradas_procesadas\
+      \ += len(input_items[0])\n        \n        # Verificar si se han procesado\
+      \ suficientes entradas (definido por \"salto\")\n        if self.entradas_procesadas\
+      \ >= self.salto:\n            self.entradas_procesadas = 0  # Restablecer el\
+      \ contador\n            \n            # Recibir los datos del espectro (vector\
+      \ de tama\xF1o N)\n            data = input_items[0][0]\n            \n    \
+      \        # Registrar los datos en la Google Sheet\n            self.registrarDatos(data)\n\
+      \        \n        return len(input_items[0])  # Indica que se procesaron todas\
+      \ las muestras de entrada\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    finicial: 1417e6
+    fpaso: '1000'
+    latitud: latitud
+    longitud: longitud
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    salto: '40000'
+    url_google_sheet: '''https://docs.google.com/spreadsheets/d/1ZI1pO5DJjVnh0ph0jH8sRjnLGqXHOz-jBXJ1ZF875JM/edit?usp=sharing'''
+  states:
+    _io_cache: ('Envia a Google Sheet', 'blk', [('url_google_sheet', "'https://docs.google.com/spreadsheets/d/1ZI1pO5DJjVnh0ph0jH8sRjnLGqXHOz-jBXJ1ZF875JM/edit?usp=sharing'"),
+      ('latitud', '7.136921524265512'), ('longitud', '-73.12083990526662'), ('N',
+      '8'), ('finicial', '1417000000'), ('fpaso', '1421000000'), ('salto', '40000')],
+      [('0', 'float', 8)], [], '', ['N', 'finicial', 'fpaso', 'latitud', 'longitud',
+      'salto', 'url_google_sheet'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 340.0]
+    rotation: 0
+    state: enabled
+- name: fft_vxx_0
+  id: fft_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fft_size: N
+    forward: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    shift: 'True'
+    type: float
+    window: window.blackmanharris(N)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 364.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_sink_x_0
+  id: qtgui_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    bw: samp_rate
+    comment: ''
+    fc: '0'
+    fftsize: '1024'
+    gui_hint: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    plotconst: 'True'
+    plotfreq: 'True'
+    plottime: 'True'
+    plotwaterfall: 'True'
+    rate: '10'
+    showports: 'False'
+    showrf: 'False'
+    type: float
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 420.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_vector_sink_f_0
+  id: qtgui_vector_sink_f
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'True'
+    average: '1.0'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    grid: 'False'
+    gui_hint: ''
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    ref_level: '0'
+    showports: 'False'
+    update_time: '0.10'
+    vlen: N
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    x_axis_label: '"x-Axis"'
+    x_start: '0'
+    x_step: '1.0'
+    x_units: '""'
+    y_axis_label: '"y-Axis"'
+    y_units: '""'
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [968, 188.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [audio_source_0, '0', blocks_stream_to_vector_0, '0']
+- [blocks_complex_to_mag_0, '0', epy_block_0, '0']
+- [blocks_complex_to_mag_0, '0', qtgui_vector_sink_f_0, '0']
+- [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
+- [blocks_throttle2_0, '0', blocks_stream_to_vector_0, '0']
+- [blocks_wavfile_source_0, '0', blocks_throttle2_0, '0']
+- [blocks_wavfile_source_0, '0', qtgui_sink_x_0, '0']
+- [fft_vxx_0, '0', blocks_complex_to_mag_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.10.0

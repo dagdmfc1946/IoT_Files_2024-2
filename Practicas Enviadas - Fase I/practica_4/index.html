@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios a la oficina de reparto</title>
+    <!-- Incluyendo Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #0c4da2;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        /* Imagen principal */
+        .main-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Contenedor general */
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Texto dentro de un marco */
+        .texto-en-marco {
+            color: red;
+            width: 500px;
+            border: 2px solid #0c4da2;
+            padding: 10px;
+            margin: 20px auto;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #fefefe;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0c4da2;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Órdenes recibidas para el despacho</h1>
+    </header>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <img class="main-image" src="https://img.global.news.samsung.com/cl/wp-content/uploads/2020/05/FAMILYHUB.jpg" alt="Imagen de un refrigerador">
+       
+        <!-- Tabla de datos -->
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Numero</th>
+                    <th>Fecha</th>
+                    <th>Nevera</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Pesos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>2023-09-27 06:16:38</td>
+                    <td>neveraChachones</td>
+                    <td>huevos</td>
+                    <td>10</td>
+                    <td>30000</td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>2024-08-28 22:34:20</td>
+                    <td>neveraDiego</td>
+                    <td>carne</td>
+                    <td>2</td>
+                    <td>24000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Agregando el iframe después de la tabla -->
+        <iframe src="https://docs.google.com/spreadsheets/d/1FmE40k_cKIGeJ_n3YZdiUZD6reeLojNGRtz9nCUIDpo/pubhtml?gid=1200278807&single=true" width="100%" height="600" style="border:none;"></iframe>
+
+
+        <!-- Hipervínculo -->
+        <p class="mt-4">
+            <a href="https://docs.google.com/spreadsheets/d/1FmE40k_cKIGeJ_n3YZdiUZD6reeLojNGRtz9nCUIDpo/edit?usp=sharing" class="btn btn-primary">
+                Haz click aquí para ver tabla de datos
+            </a>
+        </p>
+    </div>
+
+    <div class="texto-en-marco">
+        Este es un texto en color rojo dentro de un marco de 500 píxeles de ancho.
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 Servicios a la oficina de reparto. Todos los derechos reservados.
+    </footer>
+
+    <!-- Incluyendo Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

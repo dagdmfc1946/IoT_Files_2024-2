@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script>
+      // Función para realizar la operación usando google.script.run
+      function realizarOperacion() {
+        const a = document.getElementById('valorA').value;
+        const b = document.getElementById('valorB').value;
+        const operacion = document.getElementById('operacion').value;
+        
+        google.script.run.withSuccessHandler(function(result) {
+          document.getElementById('resultado').value = result; // Mostrar el resultado en la casilla
+        }).ejecutarOperacion(operacion, a, b);
+      }
+
+      // Función para limpiar las casillas
+      function limpiar() {
+        document.getElementById('valorA').value = '';
+        document.getElementById('valorB').value = '';
+        document.getElementById('resultado').value = '';
+      }
+    </script>
+  </head>
+  <body>
+    <h3>Calculadora WebApp</h3>
+    
+    <!-- Entrada para el valor de 'a' -->
+    <label for="valorA">Valor A:</label>
+    <input type="number" id="valorA" step="any">
+    
+    <br><br>
+
+    <!-- Entrada para el valor de 'b' -->
+    <label for="valorB">Valor B:</label>
+    <input type="number" id="valorB" step="any">
+    
+    <br><br>
+    
+    <!-- Menú desplegable para seleccionar la operación -->
+    <label for="operacion">Operación:</label>
+    <select id="operacion">
+      <option value="suma">Suma</option>
+      <option value="resta">Resta</option>
+      <option value="multiplicacion">Multiplicación</option>
+      <option value="division">División</option>
+    </select>
+    
+    <br><br>
+    
+    <!-- Botón para realizar la operación -->
+    <button onclick="realizarOperacion()">=</button>
+    
+    <!-- Casilla para mostrar el resultado -->
+    <input type="text" id="resultado" readonly>
+    
+    <br><br>
+    
+    <!-- Botón para limpiar las casillas -->
+    <button onclick="limpiar()">CE</button>
+  </body>
+</html>
